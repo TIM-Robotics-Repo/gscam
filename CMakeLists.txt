@@ -22,12 +22,12 @@ include_directories(
   ${GLIB_INCLUDE_DIRS}
   ${GST_APP_INCLUDE_DIRS})
 
-add_library(gscam SHARED src/gscam.cpp)
-target_link_libraries(gscam
+add_library(${PROJECT_NAME} SHARED src/gscam.cpp)
+target_link_libraries(${PROJECT_NAME}
   ${ament_LIBRARIES}
   ${GSTREAMER_LIBRARIES}
   ${GST_APP_LIBRARIES})
-ament_target_dependencies(gscam
+ament_target_dependencies(${PROJECT_NAME}
   "class_loader"
   "image_transport"
   "rclcpp"
@@ -36,9 +36,9 @@ ament_target_dependencies(gscam
   "camera_calibration_parsers"
   "camera_info_manager")
 
-rclcpp_components_register_node(gscam
+rclcpp_components_register_node(${PROJECT_NAME}
   PLUGIN "gscam::GSCam"
-  EXECUTABLE gscam_node
+  EXECUTABLE ${PROJECT_NAME}_node
 )
 
 set(node_plugins "${node_plugins}gscam::GSCam;$<TARGET_FILE:gscam>\n")
@@ -54,7 +54,7 @@ if(BUILD_TESTING)
     ENV GSCAM_CONFIG="videotestsrc pattern=snow ! capsfilter caps=video/x-raw,width=800,height=600 ! videoconvert"
   )
   if(TARGET smoke_test)
-    target_link_libraries(smoke_test gscam)
+    target_link_libraries(smoke_test ${PROJECT_NAME})
   endif()
 endif()
 
@@ -62,20 +62,18 @@ ament_export_dependencies(class_loader)
 
 ament_export_include_directories(include)
 
-ament_export_targets(export_gscam)
+ament_export_targets(export_${PROJECT_NAME})
 
-ament_export_libraries(gscam)
+ament_export_libraries(${PROJECT_NAME})
 
 ament_package()
 
 # Install directives
 
-install(TARGETS gscam
-  EXPORT export_gscam
+install(TARGETS ${PROJECT_NAME}
+  EXPORT export_${PROJECT_NAME}
   DESTINATION lib
 )
 
-install(
-  DIRECTORY "examples"
-  DESTINATION "share/${PROJECT_NAME}"
-)
+install(DIRECTORY launch examples
+  DESTINATION share/${PROJECT_NAME}/)
