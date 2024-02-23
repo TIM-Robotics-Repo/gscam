@@ -237,12 +237,12 @@ bool GSCam::init_stream() {
       use_sensor_data_qos_ ? rclcpp::SensorDataQoS() : rclcpp::QoS{1};
   if (image_encoding_ == "jpeg") {
     jpeg_pub_ = create_publisher<sensor_msgs::msg::CompressedImage>(
-        "camera/image_raw/compressed", qos);
+        camera_name_ + "/image_raw/compressed", qos);
     cinfo_pub_ = create_publisher<sensor_msgs::msg::CameraInfo>(
-        "camera/camera_info", qos);
+        camera_name_ + "/camera_info", qos);
   } else {
     camera_pub_ = image_transport::create_camera_publisher(
-        this, "camera/image_raw", qos.get_rmw_qos_profile());
+        this, camera_name_ + "/image_raw", qos.get_rmw_qos_profile());
   }
 
   return true;
