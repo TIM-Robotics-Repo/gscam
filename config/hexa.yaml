@@ -1,0 +1,59 @@
+gscam0:
+  ros__parameters:
+    camera_name: "top_front_left"
+    camera_info_url: ""
+    gscam_config: "nvv4l2camerasrc device=/dev/video0 ! videorate drop-only=True ! video/x-raw(memory:NVMM), format=(string)UYVY, width=(int)1920, height=(int)1080, framerate=(fraction)10/1 ! nvvidconv ! video/x-raw, format=BGRx ! videoconvert ! video/x-raw, format=BGR"
+    frame_id: "top_front_left_link"
+    reopen_on_eof: True
+    use_gst_timestamps: True
+    image_encoding: "rgb8"
+
+gscam1:
+  ros__parameters:
+    camera_name: "top_front_right"
+    camera_info_url: ""
+    gscam_config: "nvv4l2camerasrc device=/dev/video1 ! videorate drop-only=True ! video/x-raw(memory:NVMM), format=(string)UYVY, width=(int)1920, height=(int)1080, framerate=(fraction)10/1 ! nvvidconv ! video/x-raw, format=BGRx ! videoconvert ! video/x-raw, format=BGR"
+    frame_id: "top_front_right_link"
+    reopen_on_eof: True
+    use_gst_timestamps: True
+    image_encoding: "rgb8"
+
+gscam2:
+  ros__parameters:
+    camera_name: "top_back_left"
+    camera_info_url: ""
+    gscam_config: "nvv4l2camerasrc device=/dev/video2 ! videorate drop-only=True ! video/x-raw(memory:NVMM), format=(string)UYVY, width=(int)1920, height=(int)1080, framerate=(fraction)10/1 ! nvvidconv ! video/x-raw, format=BGRx ! videoconvert ! video/x-raw, format=BGR"
+    frame_id: "top_back_left_link"
+    reopen_on_eof: True
+    use_gst_timestamps: True
+    image_encoding: "rgb8"
+
+gscam3:
+  ros__parameters:
+    camera_name: "top_back_right"
+    camera_info_url: ""
+    gscam_config: "nvv4l2camerasrc device=/dev/video3 ! videorate drop-only=True ! video/x-raw(memory:NVMM), format=(string)UYVY, width=(int)1920, height=(int)1080, framerate=(fraction)10/1 ! nvvidconv ! video/x-raw, format=BGRx ! videoconvert ! video/x-raw, format=BGR"
+    frame_id: "top_back_right_link"
+    reopen_on_eof: True
+    use_gst_timestamps: True
+    image_encoding: "rgb8"
+
+gscam4:
+  ros__parameters:
+    camera_name: "mid_front_left"
+    camera_info_url: ""
+    gscam_config: "nvv4l2camerasrc device=/dev/video4 ! videorate drop-only=True ! video/x-raw(memory:NVMM), format=(string)UYVY, width=(int)1920, height=(int)1080, framerate=(fraction)10/1 ! nvvidconv ! video/x-raw, format=BGRx ! videoconvert ! video/x-raw, format=BGR"
+    frame_id: "mid_front_left_link"
+    reopen_on_eof: True
+    use_gst_timestamps: True
+    image_encoding: "rgb8"
+
+gscam5:
+  ros__parameters:
+    camera_name: "mid_front_right"
+    camera_info_url: ""
+    gscam_config: "nvv4l2camerasrc device=/dev/video5 ! videorate drop-only=True ! video/x-raw(memory:NVMM), format=(string)UYVY, width=(int)1920, height=(int)1080, framerate=(fraction)10/1 ! nvvidconv ! video/x-raw, format=BGRx ! videoconvert ! video/x-raw, format=BGR"
+    frame_id: "mid_front_right_link"
+    reopen_on_eof: True
+    use_gst_timestamps: True
+    image_encoding: "rgb8"
