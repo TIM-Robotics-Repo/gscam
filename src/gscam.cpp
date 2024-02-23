@@ -265,44 +265,17 @@ bool GSCam::init_stream() {
         this, "camera/image_raw", qos.get_rmw_qos_profile());
   }
 
+  if (gst_element_set_state(pipeline_, GST_STATE_PLAYING) ==
+      GST_STATE_CHANGE_FAILURE) {
+    RCLCPP_ERROR(get_logger(), "Could not start stream!");
+    return false;
+  }
+  RCLCPP_INFO(get_logger(), "Started stream.");
+
   return true;
 }
 
 void GSCam::publish_stream() {
-  RCLCPP_INFO_STREAM(get_logger(), "Publishing stream...");
-
-  // Pre-roll camera if needed
-  if (preroll_) {
-    RCLCPP_DEBUG(get_logger(), "Performing preroll...");
-
-    // The PAUSE, PLAY, PAUSE, PLAY cycle is to ensure proper pre-roll
-    // I am told this is needed and am erring on the side of caution.
-    gst_element_set_state(pipeline_, GST_STATE_PLAYING);
-    if (gst_element_get_state(pipeline_, NULL, NULL, -1) ==
-        GST_STATE_CHANGE_FAILURE) {
-      RCLCPP_ERROR(get_logger(), "Failed to PLAY during preroll.");
-      return;
-    } else {
-      RCLCPP_DEBUG(get_logger(), "Stream is PLAYING in preroll.");
-    }
-
-    gst_element_set_state(pipeline_, GST_STATE_PAUSED);
-    if (gst_element_get_state(pipeline_, NULL, NULL, -1) ==
-        GST_STATE_CHANGE_FAILURE) {
-      RCLCPP_ERROR(get_logger(), "Failed to PAUSE.");
-      return;
-    } else {
-      RCLCPP_INFO(get_logger(), "Stream is PAUSED in preroll.");
-    }
-  }
-
-  if (gst_element_set_state(pipeline_, GST_STATE_PLAYING) ==
-      GST_STATE_CHANGE_FAILURE) {
-    RCLCPP_ERROR(get_logger(), "Could not start stream!");
-    return;
-  }
-  RCLCPP_INFO(get_logger(), "Started stream.");
-
   // This should block until a new frame is awake, this way, we'll run at the
   // actual capture framerate of the device.
   // RCLCPP_DEBUG(get_logger(), "Getting data...");
@@ -346,8 +319,7 @@ void GSCam::publish_stream() {
   } else {
     cinfo->header.stamp = now();
   }
-  // RCLCPP_INFO(get_logger(), "Image time stamp:
-  // %.3f",cinfo->header.stamp.toSec());
+
   cinfo->header.frame_id = frame_id_;
   if (image_encoding_ == "jpeg") {
     sensor_msgs::msg::CompressedImage::SharedPtr img(
