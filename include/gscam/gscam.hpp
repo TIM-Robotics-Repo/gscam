@@ -19,27 +19,25 @@
 #include <string>
 
 extern "C" {
-#include "gst/gst.h"
 #include "gst/app/gstappsink.h"
+#include "gst/gst.h"
 }
 
 #include "rclcpp/rclcpp.hpp"
 
-#include "image_transport/image_transport.hpp"
 #include "camera_info_manager/camera_info_manager.hpp"
+#include "image_transport/image_transport.hpp"
 
-#include "sensor_msgs/msg/image.hpp"
-#include "sensor_msgs/msg/compressed_image.hpp"
 #include "sensor_msgs/msg/camera_info.hpp"
+#include "sensor_msgs/msg/compressed_image.hpp"
+#include "sensor_msgs/msg/image.hpp"
 #include "sensor_msgs/srv/set_camera_info.hpp"
 
-namespace gscam
-{
+namespace gscam {
 
-class GSCam : public rclcpp::Node
-{
+class GSCam : public rclcpp::Node {
 public:
-  explicit GSCam(const rclcpp::NodeOptions & options);
+  explicit GSCam(const rclcpp::NodeOptions &options);
   ~GSCam();
 
 private:
@@ -54,8 +52,8 @@ private:
   std::string gsconfig_;
 
   // Gstreamer structures
-  GstElement * pipeline_;
-  GstElement * sink_;
+  GstElement *pipeline_;
+  GstElement *sink_;
 
   // Appsink configuration
   bool sync_sink_;
@@ -70,6 +68,7 @@ private:
   std::string camera_name_;
   std::string camera_info_url_;
   bool use_sensor_data_qos_;
+  uint64_t grab_period_in_msec_;
 
   // ROS Inteface
   // Calibration between ros::Time and gst timestamps
@@ -83,8 +82,10 @@ private:
   // Poll gstreamer on a separate thread
   std::thread pipeline_thread_;
   std::atomic<bool> stop_signal_;
+
+  rclcpp::TimerBase::SharedPtr timer_;
 };
 
-}  // namespace gscam
+} // namespace gscam
 
-#endif  // GSCAM__GSCAM_HPP_
+#endif // GSCAM__GSCAM_HPP_
