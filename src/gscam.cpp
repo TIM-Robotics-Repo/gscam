@@ -172,8 +172,7 @@ bool GSCam::init_stream() {
   // http://gstreamer.freedesktop.org/data/doc/gstreamer/head/pwg/html/section-types-definitions.html
   if (image_encoding_ == sensor_msgs::image_encodings::RGB8) {
     caps = gst_caps_new_simple("video/x-raw", "format", G_TYPE_STRING, "RGB",
-                               "max-buffers", G_TYPE_INT, 1, "drop",
-                               G_TYPE_BOOLEAN, true, NULL);
+                               NULL);
   } else if (image_encoding_ == sensor_msgs::image_encodings::MONO8) {
     caps = gst_caps_new_simple("video/x-raw", "format", G_TYPE_STRING, "GRAY8",
                                NULL);
@@ -191,7 +190,8 @@ bool GSCam::init_stream() {
   // Sometimes setting this to true can cause a large number of frames to be
   // dropped
   gst_base_sink_set_sync(GST_BASE_SINK(sink_), (sync_sink_) ? TRUE : FALSE);
-
+  // Set max buffer and enable drop to prevent memory overflow by queuing
+  g_object_set(sink_, "max-buffers", 1, "drop", 1, NULL);
   if (GST_IS_PIPELINE(pipeline_)) {
     GstPad *outpad = gst_bin_find_unlinked_pad(GST_BIN(pipeline_), GST_PAD_SRC);
     g_assert(outpad);
