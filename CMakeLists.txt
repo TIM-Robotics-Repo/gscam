@@ -75,5 +75,5 @@ install(TARGETS ${PROJECT_NAME}
   DESTINATION lib
 )
 
-install(DIRECTORY launch examples
+install(DIRECTORY launch config examples
   DESTINATION share/${PROJECT_NAME}/)
