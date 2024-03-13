@@ -123,6 +123,12 @@ bool GSCam::configure() {
 
   use_sensor_data_qos_ = declare_parameter("use_sensor_data_qos", false);
 
+  int awaiting_time = declare_parameter("awaiting_time", 0);
+  if (awaiting_time != 0) {
+    rclcpp::Rate r(1.0 / static_cast<double>(awaiting_time));
+    r.sleep();
+  }
+
   return true;
 }
 
