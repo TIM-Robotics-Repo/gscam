@@ -399,38 +399,41 @@ void GSCam::publish_stream() {
 
       static std::deque<rclcpp::Time> stamps;
       static uint64_t count = 0;
-      stamps.push_back(this->get_clock()->now());
-      if (++count % 10 == 0) {
-        int window1 = std::min(10u, static_cast<uint32_t>(stamps.size()));
-        int window2 = std::min(100u, static_cast<uint32_t>(stamps.size()));
-        int window3 = std::min(1000u, static_cast<uint32_t>(stamps.size()));
+      stamps.push_front(this->get_clock()->now());
+      if (++count % 10 == 0 && stamps.size() > 1) {
+        int window1 = std::min(10u, static_cast<uint32_t>(stamps.size() - 1));
+        int window2 = std::min(100u, static_cast<uint32_t>(stamps.size() - 1));
+        int window3 = std::min(1000u, static_cast<uint32_t>(stamps.size() - 1));
 
         RCLCPP_INFO_STREAM(
             get_logger(),
             "Window " << window1 << ": "
-                      << window1 / 1e-6 *
-                             static_cast<double>(
-                                 (stamps.front() - stamps[window1 - 1])
-                                     .to_chrono<std::chrono::microseconds>()
-                                     .count()));
+                      << window1 /
+                             (1e-6 *
+                              static_cast<double>(
+                                  (stamps.front() - stamps[window1])
+                                      .to_chrono<std::chrono::microseconds>()
+                                      .count())));
         RCLCPP_INFO_STREAM(
             get_logger(),
             "Window " << window2 << ": "
-                      << window2 / 1e-6 *
-                             static_cast<double>(
-                                 (stamps.front() - stamps[window2 - 1])
-                                     .to_chrono<std::chrono::microseconds>()
-                                     .count()));
+                      << window2 /
+                             (1e-6 *
+                              static_cast<double>(
+                                  (stamps.front() - stamps[window2])
+                                      .to_chrono<std::chrono::microseconds>()
+                                      .count())));
         RCLCPP_INFO_STREAM(
             get_logger(),
             "Window " << window3 << ": "
-                      << window3 / 1e-6 *
-                             static_cast<double>(
-                                 (stamps.front() - stamps[window3 - 1])
-                                     .to_chrono<std::chrono::microseconds>()
-                                     .count()));
+                      << window3 /
+                             (1e-6 *
+                              static_cast<double>(
+                                  (stamps.front() - stamps[window3])
+                                      .to_chrono<std::chrono::microseconds>()
+                                      .count())));
       }
-      if (stamps.size() > 1000) {
+      if (stamps.size() > 1001) {
         stamps.pop_back();
       }
 
