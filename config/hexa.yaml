@@ -8,6 +8,7 @@ gscam0:
     use_gst_timestamps: True
     image_encoding: "rgb8"
     awaiting_time: 0
+    framerate_debug_mode: True
 
 gscam1:
   ros__parameters:
@@ -18,7 +19,8 @@ gscam1:
     reopen_on_eof: True
     use_gst_timestamps: True
     image_encoding: "rgb8"
-    awaiting_time: 5
+    awaiting_time: 2
+    framerate_debug_mode: True
 
 gscam2:
   ros__parameters:
@@ -29,7 +31,8 @@ gscam2:
     reopen_on_eof: True
     use_gst_timestamps: True
     image_encoding: "rgb8"
-    awaiting_time: 10
+    awaiting_time: 4
+    framerate_debug_mode: True
 
 gscam3:
   ros__parameters:
@@ -40,7 +43,8 @@ gscam3:
     reopen_on_eof: True
     use_gst_timestamps: True
     image_encoding: "rgb8"
-    awaiting_time: 15
+    awaiting_time: 6
+    framerate_debug_mode: True
 
 gscam4:
   ros__parameters:
@@ -51,7 +55,8 @@ gscam4:
     reopen_on_eof: True
     use_gst_timestamps: True
     image_encoding: "rgb8"
-    awaiting_time: 20
+    awaiting_time: 8
+    framerate_debug_mode: True
 
 gscam5:
   ros__parameters:
@@ -62,4 +67,5 @@ gscam5:
     reopen_on_eof: True
     use_gst_timestamps: True
     image_encoding: "rgb8"
-    awaiting_time: 25
+    awaiting_time: 10
+    framerate_debug_mode: True
