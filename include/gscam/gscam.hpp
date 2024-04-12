@@ -81,8 +81,6 @@ private:
   // Poll gstreamer on a separate thread
   std::thread pipeline_thread_;
   std::atomic<bool> stop_signal_;
-
-  bool framerate_debug_mode_{false};
 };
 
 } // namespace gscam

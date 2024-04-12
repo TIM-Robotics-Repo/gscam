@@ -128,7 +128,6 @@ bool GSCam::configure() {
     rclcpp::Rate r(1.0 / static_cast<double>(awaiting_time));
     r.sleep();
   }
-  framerate_debug_mode_ = declare_parameter("framerate_debug_mode", false);
 
   return true;
 }
@@ -397,50 +396,6 @@ void GSCam::publish_stream() {
           width_ * sensor_msgs::image_encodings::numChannels(image_encoding_);
 
       std::copy(buf_data, (buf_data) + (buf_size), img->data.begin());
-
-      if (framerate_debug_mode_) {
-        static std::deque<rclcpp::Time> stamps;
-        static uint64_t count = 0;
-        stamps.push_front(this->get_clock()->now());
-        if (++count % 10 == 0 && stamps.size() > 1) {
-          int window1 = std::min(10u, static_cast<uint32_t>(stamps.size() - 1));
-          int window2 =
-              std::min(100u, static_cast<uint32_t>(stamps.size() - 1));
-          int window3 =
-              std::min(1000u, static_cast<uint32_t>(stamps.size() - 1));
-
-          RCLCPP_DEBUG_STREAM(
-              get_logger(),
-              "Window " << window1 << ": "
-                        << window1 /
-                               (1e-6 *
-                                static_cast<double>(
-                                    (stamps.front() - stamps[window1])
-                                        .to_chrono<std::chrono::microseconds>()
-                                        .count())));
-          RCLCPP_DEBUG_STREAM(
-              get_logger(),
-              "Window " << window2 << ": "
-                        << window2 /
-                               (1e-6 *
-                                static_cast<double>(
-                                    (stamps.front() - stamps[window2])
-                                        .to_chrono<std::chrono::microseconds>()
-                                        .count())));
-          RCLCPP_DEBUG_STREAM(
-              get_logger(),
-              "Window " << window3 << ": "
-                        << window3 /
-                               (1e-6 *
-                                static_cast<double>(
-                                    (stamps.front() - stamps[window3])
-                                        .to_chrono<std::chrono::microseconds>()
-                                        .count())));
-        }
-        if (stamps.size() > 1001) {
-          stamps.pop_back();
-        }
-      }
 
       // Publish the image/info
       camera_pub_.publish(img, cinfo);
