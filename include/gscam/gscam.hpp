@@ -19,27 +19,25 @@
 #include <string>
 
 extern "C" {
-#include "gst/gst.h"
 #include "gst/app/gstappsink.h"
+#include "gst/gst.h"
 }
 
 #include "rclcpp/rclcpp.hpp"
 
-#include "image_transport/image_transport.hpp"
 #include "camera_info_manager/camera_info_manager.hpp"
+#include "image_transport/image_transport.hpp"
 
-#include "sensor_msgs/msg/image.hpp"
-#include "sensor_msgs/msg/compressed_image.hpp"
 #include "sensor_msgs/msg/camera_info.hpp"
+#include "sensor_msgs/msg/compressed_image.hpp"
+#include "sensor_msgs/msg/image.hpp"
 #include "sensor_msgs/srv/set_camera_info.hpp"
 
-namespace gscam
-{
+namespace gscam {
 
-class GSCam : public rclcpp::Node
-{
+class GSCam : public rclcpp::Node {
 public:
-  explicit GSCam(const rclcpp::NodeOptions & options);
+  explicit GSCam(const rclcpp::NodeOptions &options);
   ~GSCam();
 
 private:
@@ -54,8 +52,8 @@ private:
   std::string gsconfig_;
 
   // Gstreamer structures
-  GstElement * pipeline_;
-  GstElement * sink_;
+  GstElement *pipeline_;
+  GstElement *sink_;
 
   // Appsink configuration
   bool sync_sink_;
@@ -85,6 +83,6 @@ private:
   std::atomic<bool> stop_signal_;
 };
 
-}  // namespace gscam
+} // namespace gscam
 
-#endif  // GSCAM__GSCAM_HPP_
+#endif // GSCAM__GSCAM_HPP_

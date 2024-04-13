@@ -41,25 +41,3 @@ gscam3:
     use_gst_timestamps: True
     image_encoding: "rgb8"
     awaiting_time: 6
-
-gscam4:
-  ros__parameters:
-    camera_name: "mid_front_left"
-    camera_info_url: ""
-    gscam_config: "nvv4l2camerasrc device=/dev/video4 ! video/x-raw(memory:NVMM), format=(string)UYVY, width=(int)1920, height=(int)1080 ! nvvidconv ! video/x-raw, format=BGRx ! videoconvert ! video/x-raw, format=BGR"
-    frame_id: "mid_front_left_link"
-    reopen_on_eof: True
-    use_gst_timestamps: True
-    image_encoding: "rgb8"
-    awaiting_time: 8
-
-gscam5:
-  ros__parameters:
-    camera_name: "mid_front_right"
-    camera_info_url: ""
-    gscam_config: "nvv4l2camerasrc device=/dev/video5 ! video/x-raw(memory:NVMM), format=(string)UYVY, width=(int)1920, height=(int)1080 ! nvvidconv ! video/x-raw, format=BGRx ! videoconvert ! video/x-raw, format=BGR"
-    frame_id: "mid_front_right_link"
-    reopen_on_eof: True
-    use_gst_timestamps: True
-    image_encoding: "rgb8"
-    awaiting_time: 10
